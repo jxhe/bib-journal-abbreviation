@@ -12,10 +12,9 @@ def abbreviate(line, journal_to_abbr):
         journal_str = re.search('{.*}', line).group(0)
     else:
         raise ValueError('the format "{}" is not valid'.format(line))
-
     journal_name_strip = journal_str[1:-1]
     journal_name = journal_name_strip.replace('{','').replace('}','')
-    journal_name = journal_to_abbr.get(journal_name, journal_name_strip)
+    journal_name = journal_to_abbr.get(journal_name.lower(), journal_name_strip)
     journal_name = journal_name_template.format(journal_name)
 
     return line.replace(journal_str, journal_name)
@@ -45,5 +44,7 @@ if __name__ == '__main__':
         with open(args.user_json) as fin:
             customize_json = json.load(fin)
         journal_to_abbr.update(customize_json)
+
+    journal_to_abbr = {k.lower(): v for k, v in journal_to_abbr.items()} 
 
     main(journal_to_abbr)
