@@ -14,7 +14,7 @@ def abbreviate(line, journal_to_abbr):
         raise ValueError('the format "{}" is not valid'.format(line))
     journal_name_strip = journal_str[1:-1]
     journal_name = journal_name_strip.replace('{','').replace('}','')
-    journal_name = journal_to_abbr.get(journal_name.lower(), journal_name_strip)
+    journal_name = journal_to_abbr.get(journal_name.lower().replace('the ',''), journal_name_strip)
     journal_name = journal_name_template.format(journal_name)
 
     return line.replace(journal_str, journal_name)
